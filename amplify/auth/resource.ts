@@ -1,15 +1,30 @@
-import { defineAuth } from "@aws-amplify/backend";
+import { defineAuth } from '@aws-amplify/backend';
+import { PasswordResetEmail } from './templates/password-reset-email';
 
-/**
- * 認証リソースの定義と設定
- * @see https://docs.amplify.aws/gen2/build-a-backend/auth
- */
 export const auth = defineAuth({
   loginWith: {
     email: true,
-    externalProviders: {
-      callbackUrls: ['http://localhost:3000'],
-      logoutUrls: ['http://localhost:3000']
-    }
+    phone: false,
+    username: false
+  },
+  verification: {
+    verificationEmailSubject: 'メールアドレスの確認',
+    verificationEmailBody: '認証コード: {####}',
+  },
+  passwordPolicy: {
+    minLength: 8,
+    requireNumbers: true,
+    requireSpecialCharacters: true,
+    requireUppercase: true,
+    requireLowercase: true
+  },
+  multifactor: {
+    mode: 'OFF'
+  },
+  enableUserEmailVerification: true,
+  passwordRecovery: {
+    deliveryMethod: 'EMAIL',
+    emailMessage: PasswordResetEmail,
+    emailSubject: 'パスワードのリセット'
   }
 });
