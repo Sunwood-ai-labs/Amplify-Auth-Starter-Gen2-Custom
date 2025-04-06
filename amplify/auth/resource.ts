@@ -4,8 +4,7 @@ import { PasswordResetEmail } from './templates/password-reset-email';
 export const auth = defineAuth({
   loginWith: {
     email: true,
-    phone: false,
-    username: false
+    phone: undefined
   },
   verification: {
     verificationEmailSubject: 'メールアドレスの確認',
@@ -19,7 +18,10 @@ export const auth = defineAuth({
     requireLowercase: true
   },
   multifactor: {
-    mode: 'OFF'
+    mode: 'OFF',
+    sms: {
+      smsMessage: (code) => `認証コード: ${code}`
+    }
   },
   enableUserEmailVerification: true,
   passwordRecovery: {
